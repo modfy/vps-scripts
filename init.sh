@@ -1,4 +1,4 @@
-cd ../
+cd /home/deploy/
 ln -s vps-scripts/* ./
 rm init.sh
 
