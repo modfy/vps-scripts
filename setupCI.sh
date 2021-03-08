@@ -1,3 +1,7 @@
+if [ ! $1 | $2 ]; then
+	echo "Add Arguments, 1st Arguement is folder name, 2nd is git ssh path"
+	exit 1
+fi
 if [ ! -f ~/.ssh/id_rsa ]; then
  	ssh-keygen -t rsa -b 4096 -C "deploy@modfy.video"
 	cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
@@ -11,13 +15,7 @@ if [ -d "eng" ]; then
   cd eng/
 fi
 cd $1/
-originalUrl=`git remote get-url origin`
-secondString="git@"
-echo $originalUrl
-atUrl=$(echo "$originalUrl" | sed "s/https:\/\//$secondString/")
-result=$(echo  "$atUrl" | sed -z "s/\//:/")
-echo $result
-git remote set-url origin $result
+git remote set-url origin $2
 git pull origin master --ff-only
 echo "Private Key"
 cd 
@@ -25,3 +23,4 @@ cat ~/.ssh/id_rsa
 echo "Git Action Template"
 cat templateDeploy.yml
 echo "CI guide: https://dev.to/knowbee/how-to-setup-continuous-deployment-of-a-website-on-a-vps-using-github-actions-54im"
+
